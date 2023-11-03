@@ -13,6 +13,12 @@
         android:theme="@style/Theme.MLKangarooDetection"
         tools:targetApi="31">
         <activity
+            android:name=".helpers.ClassificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".helpers.ImageClassificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".helpers.ObjectDetectionActivity"
             android:exported="false" />
         <activity

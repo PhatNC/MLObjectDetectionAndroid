@@ -3,6 +3,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+import com.phatnc.mlkangaroodetection.helpers.ClassificationActivity
 import com.phatnc.mlkangaroodetection.helpers.ObjectDetectionActivity
 
 class MainActivity : AppCompatActivity() {
@@ -14,7 +15,6 @@ class MainActivity : AppCompatActivity() {
 
         val objectDetectionButton = findViewById<ImageButton>(R.id.objectDetectionButton)
         val imageClassification = findViewById<ImageButton>(R.id.imageClassification)
-        val flowerClassification = findViewById<ImageButton>(R.id.flowerDetection)
 
         objectDetectionButton.setOnClickListener {
             val intent = Intent(this, ObjectDetectionActivity::class.java)
@@ -22,11 +22,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         imageClassification.setOnClickListener {
-
-        }
-
-        flowerClassification.setOnClickListener {
-
+            val intent = Intent(this, ClassificationActivity::class.java)
+            startActivity(intent)
         }
     }
 }
