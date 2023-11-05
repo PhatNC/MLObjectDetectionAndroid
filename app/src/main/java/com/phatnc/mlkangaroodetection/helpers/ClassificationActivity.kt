@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -18,10 +17,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.phatnc.mlkangaroodetection.R
 import com.phatnc.mlkangaroodetection.ml.MobilenetV110224Quant
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.label.ImageLabeler
-import com.google.mlkit.vision.label.ImageLabeling
-import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
@@ -32,8 +27,8 @@ class ClassificationActivity : AppCompatActivity() {
     private lateinit var resultTextView: TextView
     private lateinit var pickImage: FloatingActionButton
     private lateinit var selectedImage: AppCompatImageView
-    private lateinit var imageLabeler: ImageLabeler
     private lateinit var bitmap: Bitmap
+    private lateinit var pickCamera: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,17 +62,17 @@ class ClassificationActivity : AppCompatActivity() {
             changeImage.launch(pickImg)
         }
 
-        imageLabeler = ImageLabeling.getClient(ImageLabelerOptions.Builder()
-            .setConfidenceThreshold(0.7f)
-            .build())
+        pickCamera = findViewById(R.id.pick_camera)
+        pickCamera.setOnClickListener {
+            val intent = Intent(this, ImageClassificationCameraActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private val changeImage =
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
-            println("HEHEHE")
-            println(it)
             if (it.resultCode == Activity.RESULT_OK) {
                 val data = it.data
                 val imgUri = data?.data
@@ -173,6 +168,4 @@ class ClassificationActivity : AppCompatActivity() {
         }
         return max
     }
-
-
 }

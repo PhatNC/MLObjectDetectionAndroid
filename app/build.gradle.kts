@@ -35,8 +35,11 @@ android {
     }
     buildFeatures {
         mlModelBinding = true
+        viewBinding = true
     }
 }
+
+val camerax_version = "1.2.2"
 
 dependencies {
 
@@ -52,6 +55,15 @@ dependencies {
 
     implementation("com.google.mlkit:image-labeling:17.0.7")
     implementation("org.tensorflow:tensorflow-lite-support:0.1.0")
+
+
+    implementation("androidx.camera:camera-core:${camerax_version}")
+    implementation("androidx.camera:camera-camera2:${camerax_version}")
+    implementation("androidx.camera:camera-lifecycle:${camerax_version}")
+    implementation("androidx.camera:camera-video:${camerax_version}")
+
+    implementation("androidx.camera:camera-view:${camerax_version}")
+    implementation("androidx.camera:camera-extensions:${camerax_version}")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

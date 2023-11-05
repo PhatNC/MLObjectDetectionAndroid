@@ -25,7 +25,8 @@
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_add_photo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/floating_button" />
 
     <TextView
         android:id="@+id/textView"
