@@ -12,10 +12,6 @@
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="-16dp"
         tools:layout_editor_absoluteY="251dp">
-
-
-
-
     </androidx.camera.view.PreviewView>
 
     <Button

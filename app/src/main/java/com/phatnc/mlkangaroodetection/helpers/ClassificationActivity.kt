@@ -2,6 +2,7 @@ package com.phatnc.mlkangaroodetection.helpers
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -14,9 +15,15 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import com.google.android.gms.tasks.Task
 import com.phatnc.mlkangaroodetection.R
 import com.phatnc.mlkangaroodetection.ml.MobilenetV110224Quant
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.Translator
+import com.google.mlkit.nl.translate.TranslatorOptions
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
@@ -29,6 +36,10 @@ class ClassificationActivity : AppCompatActivity() {
     private lateinit var selectedImage: AppCompatImageView
     private lateinit var bitmap: Bitmap
     private lateinit var pickCamera: FloatingActionButton
+    private lateinit var resultTranslateTextView: TextView
+
+    private lateinit var translatorVietnamese: Translator
+    private var booleanVietnamese: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +68,8 @@ class ClassificationActivity : AppCompatActivity() {
         pickImage = findViewById(R.id.pick_image)
         selectedImage = findViewById(R.id.selected_image)
         resultTextView = findViewById(R.id.textView)
+        resultTranslateTextView = findViewById(R.id.textViewTranslate)
+
         pickImage.setOnClickListener {
             val pickImg = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             changeImage.launch(pickImg)
@@ -66,6 +79,29 @@ class ClassificationActivity : AppCompatActivity() {
         pickCamera.setOnClickListener {
             val intent = Intent(this, ImageClassificationCameraActivity::class.java)
             startActivity(intent)
+        }
+
+        val translatorOptionsVietnamese = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.ENGLISH)
+            .setTargetLanguage(TranslateLanguage.VIETNAMESE)
+            .build()
+
+        translatorVietnamese = Translation.getClient(translatorOptionsVietnamese)
+
+        downloadModel()
+    }
+
+    private fun translateToVietnamese() {
+        if (booleanVietnamese) {
+            translatorVietnamese.translate(resultTextView.text.toString())
+                .addOnSuccessListener {
+                    Log.d(TAG, "translate result: $it")
+                    resultTranslateTextView.text = it
+                }
+                .addOnFailureListener {
+                    Log.d(TAG, "translate error exception: $it")
+                    resultTranslateTextView.text = ""
+                }
         }
     }
 
@@ -149,6 +185,7 @@ class ClassificationActivity : AppCompatActivity() {
             print("label: ${labels[labelIndex]}")
 
             resultTextView.text = labels[labelIndex]
+            translateToVietnamese()
             // Releases model resources if no longer used.
             model.close()
         } catch (e: IllegalArgumentException) {
@@ -167,5 +204,26 @@ class ClassificationActivity : AppCompatActivity() {
             }
         }
         return max
+    }
+
+    private fun buttonDownloadModel() {
+
+    }
+    private fun downloadModel() {
+        val downloadConditions = DownloadConditions.Builder()
+            .requireWifi()
+            .build()
+
+        Log.d(TAG, "Download model")
+
+        translatorVietnamese.downloadModelIfNeeded(downloadConditions)
+            .addOnSuccessListener {
+                Log.d(TAG, "Downloaded model success")
+                booleanVietnamese = true
+            }
+            .addOnFailureListener {
+                Log.d(TAG, "Download model failure")
+                booleanVietnamese = false
+            }
     }
 }

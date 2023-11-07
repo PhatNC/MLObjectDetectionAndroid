@@ -42,17 +42,37 @@
         app:layout_constraintEnd_toStartOf="@+id/pick_image" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/labelResult"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="40dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:text="@string/result"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selected_image" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelResult" />
 
+    <TextView
+        android:id="@+id/textViewTranslate"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
