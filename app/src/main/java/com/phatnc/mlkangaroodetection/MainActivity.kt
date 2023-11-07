@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import com.phatnc.mlkangaroodetection.helpers.ClassificationActivity
-import com.phatnc.mlkangaroodetection.helpers.HandwrittenActivity
 import com.phatnc.mlkangaroodetection.helpers.ObjectDetectionActivity
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +15,6 @@ class MainActivity : AppCompatActivity() {
 
         val objectDetectionButton = findViewById<ImageButton>(R.id.objectDetectionButton)
         val imageClassification = findViewById<ImageButton>(R.id.imageClassification)
-        val handWrittenClassification = findViewById<ImageButton>(R.id.handWrittenClassification)
 
         objectDetectionButton.setOnClickListener {
             val intent = Intent(this, ObjectDetectionActivity::class.java)
@@ -28,9 +26,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        handWrittenClassification.setOnClickListener {
-            val intent = Intent(this,HandwrittenActivity::class.java)
-            startActivity(intent)
-        }
     }
 }

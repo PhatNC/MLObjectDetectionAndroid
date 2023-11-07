@@ -57,6 +57,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
                                 // Use the loaded bitmap
 //                                runClassification()
                                 lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(bitmap) }
+                                resultTextView.text = "Detecting..."
                             } else {
                                 // Handle the case where the bitmap couldn't be loaded
                             }
@@ -133,6 +134,11 @@ class ObjectDetectionActivity : AppCompatActivity() {
     }
 
     private fun debugPrint(results: List<Detection>) {
+
+        if (results.isEmpty()){
+            resultTextView.text = "Cannot find any object!"
+        }
+
         var textResult: String = ""
         // Create a mutable copy of the bitmap
         val mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -155,7 +161,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
             val firstLabel = obj.categories.first()
             val confidence: Int = firstLabel.score.times(100).toInt()
 
-            textResult += "${firstLabel.label}: bbox: (${box.left}, ${box.top}, ${box.right},${box.bottom}) score: $confidence% \n"
+            textResult += "${firstLabel.label}(score: $confidence%): location: (${box.left}, ${box.top}, ${box.right},${box.bottom}) \n"
 
             // Draw the bounding box
             val paint = Paint()

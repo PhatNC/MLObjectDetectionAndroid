@@ -37,7 +37,7 @@ class ClassificationActivity : AppCompatActivity() {
     private lateinit var bitmap: Bitmap
     private lateinit var pickCamera: FloatingActionButton
     private lateinit var resultTranslateTextView: TextView
-
+    private lateinit var labelResult: TextView
     private lateinit var translatorVietnamese: Translator
     private var booleanVietnamese: Boolean = false
 
@@ -69,6 +69,7 @@ class ClassificationActivity : AppCompatActivity() {
         selectedImage = findViewById(R.id.selected_image)
         resultTextView = findViewById(R.id.textView)
         resultTranslateTextView = findViewById(R.id.textViewTranslate)
+        labelResult = findViewById(R.id.labelResult)
 
         pickImage.setOnClickListener {
             val pickImg = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
@@ -183,7 +184,7 @@ class ClassificationActivity : AppCompatActivity() {
             }
 
             print("label: ${labels[labelIndex]}")
-
+            labelResult.text = "Result:"
             resultTextView.text = labels[labelIndex]
             translateToVietnamese()
             // Releases model resources if no longer used.
