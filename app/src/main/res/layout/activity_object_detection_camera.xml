@@ -4,31 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".helpers.ImageClassificationCameraActivity">
+    tools:context=".helpers.ObjectDetectionCameraActivity">
 
-    <LinearLayout
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <androidx.camera.view.PreviewView
-            android:id="@+id/viewFinder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="-16dp"
-            tools:layout_editor_absoluteY="251dp"
-            android:visibility="visible">
-        </androidx.camera.view.PreviewView>
-
-        <ImageView
-            android:id="@+id/photoImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:visibility="gone"/>
-    </LinearLayout>
-
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="251dp">
+    </androidx.camera.view.PreviewView>
 
     <Button
         android:id="@+id/image_capture_button"
@@ -41,17 +25,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/vertical_centerline"
         app:layout_constraintLeft_toLeftOf="parent" />
-
-    <Button
-        android:id="@+id/restart_camera"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:text="@string/restart_camera"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/video_capture_button"
@@ -69,13 +42,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/horizontal_centerline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/viewFinder"
+        app:layout_constraintStart_toStartOf="@+id/viewFinder" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_centerline"
@@ -90,4 +63,5 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".75" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

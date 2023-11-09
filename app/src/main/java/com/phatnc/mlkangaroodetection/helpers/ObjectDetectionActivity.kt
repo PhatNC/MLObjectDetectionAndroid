@@ -34,6 +34,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
     private lateinit var pickImage: FloatingActionButton
     private lateinit var selectedImage: AppCompatImageView
     private lateinit var bitmap: Bitmap
+    private lateinit var pickCamera: FloatingActionButton
 
     private val changeImage =
         registerForActivityResult(
@@ -96,11 +97,18 @@ class ObjectDetectionActivity : AppCompatActivity() {
         }
 
         pickImage = findViewById(R.id.pick_image)
+        pickCamera = findViewById(R.id.pick_camera)
         selectedImage = findViewById(R.id.selected_image)
         resultTextView = findViewById(R.id.textView)
+
         pickImage.setOnClickListener {
             val pickImg = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             changeImage.launch(pickImg)
+        }
+
+        pickCamera.setOnClickListener {
+            val intent = Intent(this, ObjectDetectionCameraActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -27,6 +27,9 @@
         android:theme="@style/Theme.MLKangarooDetection"
         tools:targetApi="31">
         <activity
+            android:name=".helpers.ObjectDetectionCameraActivity"
+            android:exported="false" />
+        <activity
             android:name=".helpers.HandwrittenActivity"
             android:exported="false" />
         <activity

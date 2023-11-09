@@ -25,7 +25,9 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCaptureException
@@ -63,6 +65,8 @@ class ImageClassificationCameraActivity : AppCompatActivity() {
     private lateinit var viewFinder: PreviewView
     private lateinit var textResult: TextView
     private lateinit var cameraExecutor: ExecutorService
+    private lateinit var photoImageView: ImageView
+    private lateinit var startCameraButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,12 +83,21 @@ class ImageClassificationCameraActivity : AppCompatActivity() {
         videoCaptureButton = findViewById(R.id.video_capture_button)
         viewFinder = findViewById(R.id.viewFinder)
         textResult = findViewById(R.id.textResult)
+        photoImageView = findViewById(R.id.photoImageView)
+        startCameraButton = findViewById(R.id.restart_camera)
 
         // Set up the listeners for take photo and video capture buttons
         imageCaptureButton.setOnClickListener { takePhoto() }
         videoCaptureButton.setOnClickListener { captureVideo() }
+        startCameraButton.setOnClickListener { restartCamera() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+    }
+
+    private fun restartCamera() {
+        photoImageView.visibility = View.GONE
+        viewFinder.visibility = View.VISIBLE
+        startCamera()
     }
 
     private val activityResultLauncher =
@@ -140,6 +153,16 @@ class ImageClassificationCameraActivity : AppCompatActivity() {
 
                 override fun
                         onImageSaved(output: ImageCapture.OutputFileResults){
+
+                    // Stop the camera after taking a photo
+                    val cameraProviderFuture = ProcessCameraProvider.getInstance(this@ImageClassificationCameraActivity)
+                    cameraProviderFuture.addListener({
+                        val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+                        cameraProvider.unbindAll()
+                    }, ContextCompat.getMainExecutor(this@ImageClassificationCameraActivity))
+
+                    viewFinder.visibility = View.GONE
+
                     val imgUri = output.savedUri
                     val msg = "Photo capture succeeded: ${output.savedUri}"
 
@@ -154,6 +177,8 @@ class ImageClassificationCameraActivity : AppCompatActivity() {
 
                                 if (bitmap != null) {
                                     // Use the loaded bitmap
+                                    photoImageView.setImageBitmap(bitmap)
+                                    photoImageView.visibility = View.VISIBLE
 
                                     val label = runClassification()
                                     Log.d(TAG, "label $label")
@@ -169,7 +194,6 @@ class ImageClassificationCameraActivity : AppCompatActivity() {
                             // Handle any exceptions that may occur during image decoding
                         }
                     }
-
 //                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
                 }

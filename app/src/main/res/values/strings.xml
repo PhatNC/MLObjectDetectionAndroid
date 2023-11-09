@@ -8,4 +8,5 @@
     <string name="stop_capture">Stop Capture</string>
     <string name="result">Result</string>
     <string name="hand_written_classification">Hand written classification</string>
+    <string name="restart_camera">Start camera</string>
 </resources>
