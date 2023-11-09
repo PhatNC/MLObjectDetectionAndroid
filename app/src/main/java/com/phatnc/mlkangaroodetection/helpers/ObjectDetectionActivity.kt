@@ -103,6 +103,7 @@ class ObjectDetectionActivity : AppCompatActivity() {
 
         pickImage.setOnClickListener {
             val pickImg = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            pickImg.type = "image/*" // Set the MIME type to image/*
             changeImage.launch(pickImg)
         }
 
@@ -173,16 +174,16 @@ class ObjectDetectionActivity : AppCompatActivity() {
 
             // Draw the bounding box
             val paint = Paint()
-            paint.color = Color.RED
+            paint.color = Color.GREEN
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = 5f
+            paint.strokeWidth = 8f
 
             canvas.drawRect(box.left, box.top, box.right, box.bottom, paint)
 
             // Add the label
-            paint.color = Color.RED
+            paint.color = Color.GREEN
             paint.style = Paint.Style.FILL
-            paint.textSize = 14f
+            paint.textSize = 24f
             paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             canvas.drawText("${firstLabel.label} $confidence%", box.left, box.top - 10f, paint)
         }

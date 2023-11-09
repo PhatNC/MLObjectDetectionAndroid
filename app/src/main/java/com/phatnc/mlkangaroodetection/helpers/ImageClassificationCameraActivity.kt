@@ -87,7 +87,7 @@ class ImageClassificationCameraActivity : AppCompatActivity() {
         startCameraButton = findViewById(R.id.restart_camera)
 
         // Set up the listeners for take photo and video capture buttons
-        imageCaptureButton.setOnClickListener { takePhoto() }
+        imageCaptureButton.setOnClickListener { takePhoto(true) }
         videoCaptureButton.setOnClickListener { captureVideo() }
         startCameraButton.setOnClickListener { restartCamera() }
 
@@ -119,7 +119,7 @@ class ImageClassificationCameraActivity : AppCompatActivity() {
             }
         }
 
-    private fun takePhoto() {
+    private fun takePhoto(isStopCam: Boolean = false) {
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
@@ -154,14 +154,16 @@ class ImageClassificationCameraActivity : AppCompatActivity() {
                 override fun
                         onImageSaved(output: ImageCapture.OutputFileResults){
 
-                    // Stop the camera after taking a photo
-                    val cameraProviderFuture = ProcessCameraProvider.getInstance(this@ImageClassificationCameraActivity)
-                    cameraProviderFuture.addListener({
-                        val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-                        cameraProvider.unbindAll()
-                    }, ContextCompat.getMainExecutor(this@ImageClassificationCameraActivity))
+                    if (isStopCam) {
+                        // Stop the camera after taking a photo
+                        val cameraProviderFuture = ProcessCameraProvider.getInstance(this@ImageClassificationCameraActivity)
+                        cameraProviderFuture.addListener({
+                            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+                            cameraProvider.unbindAll()
+                        }, ContextCompat.getMainExecutor(this@ImageClassificationCameraActivity))
 
-                    viewFinder.visibility = View.GONE
+                        viewFinder.visibility = View.GONE
+                    }
 
                     val imgUri = output.savedUri
                     val msg = "Photo capture succeeded: ${output.savedUri}"
@@ -177,8 +179,10 @@ class ImageClassificationCameraActivity : AppCompatActivity() {
 
                                 if (bitmap != null) {
                                     // Use the loaded bitmap
-                                    photoImageView.setImageBitmap(bitmap)
-                                    photoImageView.visibility = View.VISIBLE
+                                    if (isStopCam) {
+                                        photoImageView.setImageBitmap(bitmap)
+                                        photoImageView.visibility = View.VISIBLE
+                                    }
 
                                     val label = runClassification()
                                     Log.d(TAG, "label $label")

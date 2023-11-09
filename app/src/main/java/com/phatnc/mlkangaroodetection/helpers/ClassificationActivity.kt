@@ -73,6 +73,7 @@ class ClassificationActivity : AppCompatActivity() {
 
         pickImage.setOnClickListener {
             val pickImg = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            pickImg.type = "image/*" // Set the MIME type to image/*
             changeImage.launch(pickImg)
         }
 
